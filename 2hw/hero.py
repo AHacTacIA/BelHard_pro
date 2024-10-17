@@ -23,7 +23,7 @@
 
 
 class Hero:
-    def __init__(self, name: str, health: int, armor: int, strong: int):
+    def __init__(self, name: str, health: float, armor: float, strong: float):
         self.name = name
         self.health = health
         self.armor = armor
@@ -36,7 +36,7 @@ class Hero:
         print(f'Имя: {self.name}\nЗдоровье: {self.health}\nБроня: {self.armor}\nСила: {self.strong}')
         # print(self)
 
-    def kick(self, enemy: 'Hero', impact: int = 1):
+    def kick(self, enemy: 'Hero', impact: float = 1):
         damage = impact * self.strong
         if enemy.armor >= damage:
             enemy.armor -= damage
@@ -58,11 +58,11 @@ class Hero:
         print(f'{winner.name} победил!')
 
 
-hero1 = Hero(name="Иван", health=100, armor=50, strong=20)
-hero2 = Hero(name="Дракон", health=80, armor=60, strong=25)
-
-
-hero1.print_info()
-hero2.print_info()
-
-hero1.fight(hero2)
+# hero1 = Hero(name='Иван', health=100, armor=50, strong=20)
+# hero2 = Hero(name='Дракон', health=80, armor=60, strong=25)
+#
+#
+# hero1.print_info()
+# hero2.print_info()
+#
+# hero1.fight(hero2)
