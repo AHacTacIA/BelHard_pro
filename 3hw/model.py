@@ -36,9 +36,9 @@ def add_user(login:str, password:str):
         print(f"Ошибка регистрации: {e}")
 
 
-def find_user_by_login(login:str)->bool:
+def find_user_by_login(login:str):
     user = session.query(User).filter_by(login=login).first()
     if user:
-        return True
+        return user
     else:
-        return False
+        return None

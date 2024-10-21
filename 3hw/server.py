@@ -104,7 +104,9 @@ def user_validation(input_string: str):
     elif signin_match:
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         login = signin_match.group(1)
-        if find_user_by_login(login):
+        password = signin_match.group(2)
+        if find_user_by_login(login).password == password:
+
             print(f'{current_time} - пользователь {login} произведен вход')
         else:
             print(f'{current_time} - ошибка входа {login} - неверный пароль/логин')
