@@ -86,7 +86,7 @@ def user_validation(input_string: str):
                 "{дата время} - ошибка входа {login} - неверный пароль/логин"
     """
 
-    reg_match = re.match(r'^command:reg; login:([^;]+); password:([^;]+);?$', input_string)
+    reg_match = re.match(r'^command:reg; login:([a-zA-Z0-9]{6,}); password:(?=.*\d)[a-zA-Z0-9]{8,};?$', input_string)
     signin_match = re.match(r'^command:signin; login:([^;]+); password:([^;]+);?$', input_string)
     if reg_match:
         login = reg_match.group(1)

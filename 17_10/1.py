@@ -8,7 +8,7 @@ print('listen')
 
 while True:
     conn, addr = sock.accept()
-    data = conn.recv(1024).decode()
+    data = conn.recv(4).decode()
     # print(conn)
     # print(addr)
     print(data)
