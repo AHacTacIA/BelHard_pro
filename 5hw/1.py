@@ -33,12 +33,11 @@ def get_city_id(s_city: str) -> int:
         res = requests.get("http://api.openweathermap.org/data/2.5/find",
                            params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
         data = res.json()
-        cities = ["{} ({})".format(d['name'], d['sys']['country'])
-                  for d in data['list']]
         city_id = data['list'][0]['id']
-        return city_id
+
     except Exception as e:
         print("Exception (find):", e)
+    return city_id
 
 
 @app.route('/')
@@ -54,7 +53,15 @@ def duck():
 
 @app.route('/fox/<int:num>/')
 def fox(num: int):
-    return render_template('fox.html', url=f'https://randomfox.ca/images/')
+    if 1<=num<=10:
+        urls = []
+        for i in range(num):
+            res = requests.get('https://randomfox.ca/floof/').json()
+            urls.append(res['image'])
+        return render_template('fox.html', urls=urls)
+    else:
+        return '<h1 style="color:red">Введите число от 1 до 10</h1>'
+
 
 
 @app.route('/weather-minsk/')
