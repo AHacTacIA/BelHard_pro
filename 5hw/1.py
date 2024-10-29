@@ -26,6 +26,21 @@ app = Flask(__name__)
 WeatherID = "af9a1c40b40d720ee1e352270cfc4e85"
 
 
+def get_city_id(s_city: str) -> int:
+    city_id = 0
+    appid = WeatherID
+    try:
+        res = requests.get("http://api.openweathermap.org/data/2.5/find",
+                           params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
+        data = res.json()
+        cities = ["{} ({})".format(d['name'], d['sys']['country'])
+                  for d in data['list']]
+        city_id = data['list'][0]['id']
+        return city_id
+    except Exception as e:
+        print("Exception (find):", e)
+
+
 @app.route('/')
 def index():
     return render_template('home_page.html')
@@ -33,13 +48,13 @@ def index():
 
 @app.route('/duck/')
 def duck():
-    url=requests.get('https://random-d.uk/api/random').json()['url']
+    url = requests.get('https://random-d.uk/api/random').json()['url']
     return render_template('duck.html', url=url)
 
 
 @app.route('/fox/<int:num>/')
-def fox(num:int):
-    return render_template('fox.html',url = f'https://randomfox.ca/images/')
+def fox(num: int):
+    return render_template('fox.html', url=f'https://randomfox.ca/images/')
 
 
 @app.route('/weather-minsk/')
@@ -50,17 +65,28 @@ def weather_msk():
         data = res.json()
     except Exception as e:
         print("Exception (weather):", e)
-        pass
-    return render_template('weather.html',text = f"Текущая температура: {data['main']['temp']} \n{data['weather'][0]['description']}")
+    return render_template('weather.html', city='Minsk', conditions=data['weather'][0]['description'],
+                           temp=data['main']['temp'], feels_like=data['main']['feels_like'],
+                           pressure=data['main']['pressure'], humidity=data['main']['humidity'])
 
 
-@app.route('/weather/<city>/')
-def weather():
-    pass
+@app.route('/weather/<string:city>/')
+def weather(city: str):
+    try:
+        city_id = get_city_id(city)
+        res = requests.get("http://api.openweathermap.org/data/2.5/weather",
+                           params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': WeatherID})
+        data = res.json()
+    except Exception as e:
+        print("Exception (weather):", e)
+    return render_template('weather.html', city=city, conditions=data['weather'][0]['description'],
+                           temp=data['main']['temp'], feels_like=data['main']['feels_like'],
+                           pressure=data['main']['pressure'], humidity=data['main']['humidity'])
 
 
 @app.errorhandler(404)
 def page_not_found(error):
     return '<h1 style="color:red">такой страницы не существует</h1>'
+
 
 app.run(debug=True)
