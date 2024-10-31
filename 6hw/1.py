@@ -19,7 +19,7 @@
 import datetime
 import os
 
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 import requests
 
 BASE_FOLDER = os.getcwd()
@@ -28,6 +28,7 @@ app = Flask(__name__,
             static_folder=os.path.join(BASE_FOLDER, "static"),
             template_folder=os.path.join(BASE_FOLDER, "templates"))
 WeatherID = "af9a1c40b40d720ee1e352270cfc4e85"
+cl_num = 0
 
 
 def get_city_id(s_city: str) -> int:
@@ -57,7 +58,7 @@ def get_weather(city_id: int):
 @app.route('/')
 def index():
     current_minute = datetime.datetime.now().minute
-    return render_template('home_page.html',display_link = current_minute % 2 == 0)
+    return render_template('home_page.html', display_link=current_minute % 2 == 0)
 
 
 @app.route('/duck/')
@@ -96,9 +97,17 @@ def weather5():
     current_minute = datetime.datetime.now().minute
     if current_minute % 2 != 0:
         return redirect(url_for('index'))
-    city_ids = [625144, 629634, 620127, 627907, 627904, 625665] #ID областных центров РБ
+    city_ids = [625144, 629634, 620127, 627907, 627904, 625665]  #ID областных центров РБ
     weather_data = [get_weather(city_id) for city_id in city_ids]
     return render_template('weather_five.html', weather_data=weather_data)
+
+
+@app.route('/clicker/', methods=['GET','POST'])
+def clicker():
+    global cl_num
+    if request.method == 'POST':
+        cl_num += 1
+    return render_template('clicker.html', num=cl_num)
 
 
 @app.errorhandler(404)
