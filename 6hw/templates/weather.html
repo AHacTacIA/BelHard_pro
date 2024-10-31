@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css//style.css') }}">
+    <title>Weather</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+                <a href="/">Home page</a>
+        </nav>
+        <main class="content">
+            <h1>Погода на сегодня в {{city}}</h1>
+            <p>Погодные условия: {{conditions}}</p>
+            <p>Текущая температура: {{temp}}°C, ощущается как {{feels_like}}°C</p>
+            <p>Давление: {{pressure}} hPa</p>
+            <p>Влажность: {{humidity}}%</p>
+        </main>
+    </div>
+
+
+</body>
+</html>
