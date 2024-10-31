@@ -16,9 +16,10 @@
     
 
 """
+import datetime
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for, redirect
 import requests
 
 BASE_FOLDER = os.getcwd()
@@ -31,10 +32,9 @@ WeatherID = "af9a1c40b40d720ee1e352270cfc4e85"
 
 def get_city_id(s_city: str) -> int:
     city_id = 0
-    appid = WeatherID
     try:
         res = requests.get("http://api.openweathermap.org/data/2.5/find",
-                           params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
+                           params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': WeatherID})
         data = res.json()
         city_id = data['list'][0]['id']
 
@@ -43,9 +43,21 @@ def get_city_id(s_city: str) -> int:
     return city_id
 
 
+def get_weather(city_id: int):
+    try:
+        res = requests.get("http://api.openweathermap.org/data/2.5/weather",
+                           params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': WeatherID})
+        res.raise_for_status()
+        return res.json()
+    except Exception as e:
+        print("Exception (weather):", e)
+        return None
+
+
 @app.route('/')
 def index():
-    return render_template('home_page.html')
+    current_minute = datetime.datetime.now().minute
+    return render_template('home_page.html',display_link = current_minute % 2 == 0)
 
 
 @app.route('/duck/')
@@ -56,7 +68,7 @@ def duck():
 
 @app.route('/fox/<int:num>/')
 def fox(num: int):
-    if 1<=num<=10:
+    if 1 <= num <= 10:
         urls = []
         for i in range(num):
             res = requests.get('https://randomfox.ca/floof/').json()
@@ -66,32 +78,27 @@ def fox(num: int):
         return '<h1 style="color:red">Введите число от 1 до 10</h1>'
 
 
-
 @app.route('/weather-minsk/')
 def weather_msk():
-    try:
-        res = requests.get("http://api.openweathermap.org/data/2.5/weather",
-                           params={'id': 625144, 'units': 'metric', 'lang': 'ru', 'APPID': WeatherID})
-        data = res.json()
-    except Exception as e:
-        print("Exception (weather):", e)
-    return render_template('weather.html', city='Minsk', conditions=data['weather'][0]['description'],
-                           temp=data['main']['temp'], feels_like=data['main']['feels_like'],
-                           pressure=data['main']['pressure'], humidity=data['main']['humidity'])
+    data = get_weather(625144)
+    return render_template('weather.html', weather=data)
 
 
 @app.route('/weather/<string:city>/')
 def weather(city: str):
-    try:
-        city_id = get_city_id(city)
-        res = requests.get("http://api.openweathermap.org/data/2.5/weather",
-                           params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': WeatherID})
-        data = res.json()
-    except Exception as e:
-        print("Exception (weather):", e)
-    return render_template('weather.html', city=city, conditions=data['weather'][0]['description'],
-                           temp=data['main']['temp'], feels_like=data['main']['feels_like'],
-                           pressure=data['main']['pressure'], humidity=data['main']['humidity'])
+    city_id = get_city_id(city)
+    data = get_weather(city_id)
+    return render_template('weather.html', weather=data)
+
+
+@app.route('/weather-five/')
+def weather5():
+    current_minute = datetime.datetime.now().minute
+    if current_minute % 2 != 0:
+        return redirect(url_for('index'))
+    city_ids = [625144, 629634, 620127, 627907, 627904, 625665] #ID областных центров РБ
+    weather_data = [get_weather(city_id) for city_id in city_ids]
+    return render_template('weather_five.html', weather_data=weather_data)
 
 
 @app.errorhandler(404)

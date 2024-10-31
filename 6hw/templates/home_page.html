@@ -10,9 +10,12 @@
     <header>
         <nav class="topnav">
             <ul>
-                <li><a href="/duck/">Случайная утка</a></li>
-                <li><a href="/fox/1/">Случайная лиса</a></li>
-                <li><a href="/weather-minsk/">Погода в Минске</a></li>
+                <li><a href="/duck/">Random duck</a></li>
+                <li><a href="/fox/1/">Random fox</a></li>
+                <li><a href="/weather-minsk/">Weather in Minsk</a></li>
+                {% if display_link %}
+                    <li><a href="/weather-five/">Weather in 5 cities</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

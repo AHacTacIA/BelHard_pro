@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather 5</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css//style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="topnav">
+            <ul>
+                <li><a href="/">Home page</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="content">
+        <h1>Погода в 6 городах</h1>
+        <div class="weather-container">
+            {% for weather in weather_data %}
+            <div class="weather-box">
+                <h2>{{ weather.name }}</h2>
+                <p>Условия: {{ weather.weather[0].description }}</p>
+                <p>Температура: {{ weather.main.temp }}°C</p>
+                <p>Ощущается как: {{ weather.main.feels_like }}°C</p>
+                <p>Давление: {{ weather.main.pressure }} hPa</p>
+                <p>Влажность: {{ weather.main.humidity }}%</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

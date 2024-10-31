@@ -7,18 +7,21 @@
     <title>Weather</title>
 </head>
 <body>
-    <div class="container">
-        <nav class="sidebar">
-                <a href="/">Home page</a>
+    <header>
+        <nav class="topnav">
+            <ul>
+                <li><a href="/">Home page</a></li>
+            </ul>
         </nav>
-        <main class="content">
-            <h1>Погода на сегодня в {{city}}</h1>
-            <p>Погодные условия: {{conditions}}</p>
-            <p>Текущая температура: {{temp}}°C, ощущается как {{feels_like}}°C</p>
-            <p>Давление: {{pressure}} hPa</p>
-            <p>Влажность: {{humidity}}%</p>
-        </main>
-    </div>
+    </header>
+
+    <main class="content">
+        <h1>Погода на сегодня в {{weather.name}}</h1>
+        <p>Погодные условия: {{weather.weather[0].description}}</p>
+        <p>Текущая температура: {{weather.main.temp}}°C, ощущается как {{weather.main.feels_like}}°C</p>
+        <p>Давление: {{weather.main.pressure}} hPa</p>
+        <p>Влажность: {{weather.main.humidity}}%</p>
+    </main>
 
 
 </body>
