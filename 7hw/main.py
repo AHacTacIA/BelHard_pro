@@ -33,7 +33,7 @@
 import datetime
 import os
 import re
-from flask import Flask, render_template, url_for, redirect, request, flash
+from flask import Flask, render_template, url_for, redirect, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 import requests
 
@@ -59,6 +59,9 @@ class User(db.Model):
     email = db.Column(db.String(), nullable=False, unique=True)
     password = db.Column(db.String(), nullable=False)
     age = db.Column(db.Integer(), nullable=False)
+
+    def __repr__(self):
+        return f'User {self.username}'
 
 
 def add_user(username, login, email, password, age):
@@ -148,8 +151,12 @@ def check_email(email: str, errs: list) -> bool:
     return True
 
 
-def check_age(age: int, err: list) -> bool:
-    pass
+
+
+
+
+# def check_age(age: int, err: list) -> bool:
+#     pass
 
 
 def get_weather(city_id: int):
@@ -171,23 +178,31 @@ def index():
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-
-    message = ''
-    login = ''
-    password = ''
     if request.method == 'POST':
         login = request.form.get('login')  # запрос к данным формы
         password = request.form.get('password')
-    user = find_user_by_login(login)
-    if user:
-        if user.password != password:
-            message = 'Неверный логин или пароль'
-    else:
-        message = 'Неверный логин'
+        user = find_user_by_login(login)
+        if user:
+            if user.password != password:
+                message = 'Неверный логин или пароль'
+                return render_template('login.html', message=message, login=login)
+            session['user_id'] = user.id
+            session['username'] = user.username
+        else:
+            message = 'Неверный логин'
+            return render_template('login.html', message=message, login=login)
 
-    return render_template('login.html', message=message, login=login)
+        return redirect(url_for('index'))
+
+    session['click_count'] = 0
+    return render_template('login.html')
+
+
+@app.route('/logout/')
+def logout():
+    session.pop('user_id', None)
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 
 @app.route('/register/', methods=['GET', 'POST'])
@@ -225,9 +240,7 @@ def register():
                 flash(error)
             return render_template('register.html', username=username, login=login, email=email, age=age)
         else:
-            flash("Регистрация успешна!")
             add_user(username, login, email, password, age)
-            # Здесь вы можете добавить код для сохранения данных пользователя
             return redirect(url_for('index'))
 
     return render_template('register.html')
@@ -235,12 +248,16 @@ def register():
 
 @app.route('/duck/')
 def duck():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     url = requests.get('https://random-d.uk/api/random').json()['url']
     return render_template('duck.html', url=url)
 
 
 @app.route('/fox/<int:num>/')
 def fox(num: int):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     if 1 <= num <= 10:
         urls = []
         for i in range(num):
@@ -253,12 +270,16 @@ def fox(num: int):
 
 @app.route('/weather-minsk/')
 def weather_msk():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     data = get_weather(625144)
     return render_template('weather.html', weather=data)
 
 
 @app.route('/weather/<string:city>/')
 def weather(city: str):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     city_id = get_city_id(city)
     data = get_weather(city_id)
     return render_template('weather.html', weather=data)
@@ -266,9 +287,11 @@ def weather(city: str):
 
 @app.route('/weather-reg/')
 def weather_reg():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     current_minute = datetime.datetime.now().minute
-    # if current_minute % 2 != 0:
-    #     return redirect(url_for('index'))
+    if current_minute % 2 != 0:
+        return redirect(url_for('index'))
     city_ids = [625144, 629634, 620127, 627907, 627904, 625665]  #ID областных центров РБ
     weather_data = [get_weather(city_id) for city_id in city_ids]
     return render_template('weather_reg.html', weather_data=weather_data)
@@ -276,10 +299,12 @@ def weather_reg():
 
 @app.route('/clicker/', methods=['GET', 'POST'])
 def clicker():
-    global cl_num
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
-        cl_num += 1
-    return render_template('clicker.html', num=cl_num)
+        session['click_count'] += 1
+    return render_template('clicker.html', num=session['click_count'])
 
 
 @app.errorhandler(404)

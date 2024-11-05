@@ -9,6 +9,12 @@ header {
     padding: 10px 0;
 }
 
+header p{
+    color: #fff;
+    text-align: right;
+    margin-right: 20px;
+}
+
 .topnav ul {
     list-style-type: none;
     margin: 0;
