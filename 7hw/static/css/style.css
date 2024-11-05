@@ -98,6 +98,7 @@ label {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
@@ -121,6 +122,23 @@ input[type="password"] {
 }
 
 .button_login:hover {
+    background-color: #c84342;
+}
+
+.button_register {
+    width: 100%;
+    padding: 10px;
+    background-color: #782827;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    margin-bottom: 20px;
+}
+
+.button_register:hover {
     background-color: #c84342;
 }
 

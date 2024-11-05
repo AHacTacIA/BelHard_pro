@@ -173,12 +173,15 @@ def get_weather(city_id: int):
 @app.route('/')
 def index():
     current_minute = datetime.datetime.now().minute
+    if 'click_count' not in session:
+        session['click_count'] = 0
     return render_template('home_page.html', display_link=current_minute % 2 == 0)
 
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        # session['click_count'] = 0
         login = request.form.get('login')  # запрос к данным формы
         password = request.form.get('password')
         user = find_user_by_login(login)
@@ -194,7 +197,7 @@ def login():
 
         return redirect(url_for('index'))
 
-    session['click_count'] = 0
+
     return render_template('login.html')
 
 
