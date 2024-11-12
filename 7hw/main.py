@@ -310,6 +310,10 @@ def clicker():
     return render_template('clicker.html', num=session['click_count'])
 
 
+@app.route('/home_work/')
+def hw8():
+    return render_template('8hw.html')
+
 @app.errorhandler(404)
 def page_not_found(error):
     return '<h1 style="color:red">такой страницы не существует</h1>'

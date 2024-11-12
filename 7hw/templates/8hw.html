@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask site</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+    <style>
+        body {
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        }
+
+        header {
+        background-color: #782827;
+        padding: 10px 0;
+        }
+
+        header p{
+        color: #fff;
+        text-align: right;
+        margin-right: 20px;
+        }
+
+.topnav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.topnav li {
+    margin: 0 15px;
+}
+
+.topnav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #782827;
+    border-radius: 5px;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.topnav a:hover {
+    background-color: #c84342;
+    color: #fff;
+}
+        .content {
+    padding: 20px;
+    text-align: center;
+}
+
+        .poem-container{
+            font-family: "Alice", serif;
+            font-weight: 400;
+            font-style: normal;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .poem{
+            text-align: left;
+        }
+        table {
+            width: 60%;
+            text-align: center;
+            margin: 0 auto;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+
+        .four th, .four td {
+            border-left: none;
+            border-right: none;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            padding: 8px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            padding:5px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        {% if 'user_id' in session%}
+        <p>Пнриветствуем Вас, {{session['username']}}!</p>
+        {% endif %}
+        <nav class="topnav">
+            <ul>
+                <li><a href="/">Главная</a></li>
+                {% if 'user_id' in session%}
+                    <li><a href="/duck/">Утка</a></li>
+                    <li><a href="/fox/1/">Лиса</a></li>
+                    <li><a href="/clicker/">Кликер</a></li>
+                    <li><a href="/weather-minsk/">Погода в Минске</a></li>
+                    {% if display_link %}
+                        <li><a href="/weather-reg/">Погода в обл. центрах</a></li>
+                    {% endif %}
+                    <li><a href="/logout/">Выйти</a></li>
+                {% else %}
+                    <li><a href="/login/">Войти</a></li>
+                    <li><a href="/register/">Регистрация</a></li>
+                {% endif %}
+                <li><a href="/home_work/">ДЗ</a> </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        <section>
+            <h2>Joy of T<sub>E</sub>X</h2>
+        </section>
+
+        <section class="poem-container">
+            <h2>Евгений Евтушенко</h2>
+            <p>-1955-</p>
+            <div class="poem">
+                <p>Бывало, спит у ног собака,<br>
+                    костёр занявшийся гудит,<br>
+                    и женщина из полумрака<br>
+                    глазами зыбкими глядит</p>
+                <p></p>
+                <p>Потом под пихтою приляжет<br>
+                    на куртку рыжую мою<br>
+                    и мне,<br>
+                    <span style="margin-left:30px;">задумчивая</span><br>
+                    <span style="margin-left:100px;">скажет:</span><br>
+                    "А ну-ка, спой!.." -<br>
+                    <span style="margin-left:125px;"> и я пою.</span></p>
+            </div>
+        </section>
+        <hr>
+
+        <section>
+            <table>
+                <caption>Добыча драгоценных камней</caption>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <th>2010</th>
+                        <th>2012</th>
+                        <th>2014</th>
+                    </tr>
+                    <tr>
+                        <th>Сапфиры</th>
+                        <td rowspan="2">1483</td>
+                        <td>4532</td>
+                        <td>6743</td>
+                    </tr>
+                    <tr>
+                        <th>Рубины</th>
+                        <td>3835</td>
+                        <td>7482</td>
+                    </tr>
+                    <tr>
+                        <th>Алмазы</th>
+                        <td>683</td>
+                        <td colspan="2">238</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </section>
+        <hr>
+
+        <section class="four">
+            <table style="
+            border-collapse: collapse;">
+                <tbody>
+                <tr>
+                    <td></td>
+                    <th>2004</th>
+                    <th>2005</th>
+                    <th>2006</th>
+                </tr>
+                    <tr>
+                        <th>Рубины</th>
+                        <td >43</td>
+                        <td>51</td>
+                        <td>79</td>
+                    </tr>
+                    <tr>
+                        <th>Изумруды</th>
+                        <td >28</td>
+                        <td>34</td>
+                        <td>48</td>
+                    </tr>
+                    <tr>
+                        <th>Сапфиры</th>
+                        <td >29</td>
+                        <td>57</td>
+                        <td>36</td>
+                    </tr>
+                <tr>
+                        <th>Аметисты</th>
+                        <td >23</td>
+                        <td>64</td>
+                        <td>97</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <hr>
+
+        <section >
+            <table style="
+            border-collapse: collapse;">
+                <tbody>
+                <tr>
+                    <th>Название</th>
+                    <th>Цвет</th>
+                    <th>Твёрдость по Моосу</th>
+                    <th>Формула</th>
+                </tr>
+                <tr>
+                    <td>Алмаз</td>
+                    <td>Белый</td>
+                    <td>10</td>
+                    <td>C</td>
+                </tr>
+                <tr>
+                    <td>Рубин</td>
+                    <td>Красный</td>
+                    <td>9</td>
+                    <td>Al<sub>2</sub>O<sub>3</sub></td>
+                </tr>
+                <tr>
+                    <td>Аметист</td>
+                    <td>Голубой</td>
+                    <td>7</td>
+                    <td>SiO<sub>2</sub></td>
+                </tr>
+                <tr>
+                    <td>Изумруд</td>
+                    <td>Зелёный</td>
+                    <td>8</td>
+                    <td>Be<sub>3</sub>Al<sub>2</sub>(SiO<sub>3</sub>)<sub>6</sub></td>
+                </tr>
+                <tr>
+                    <td>Сапфир</td>
+                    <td>Голубой</td>
+                    <td>9</td>
+                    <td>Al<sub>2</sub>O<sub>3</sub></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </section>
+        <hr>
+
+        <section>
+
+        </section>
+        <hr>
+
+        <section>
+
+        </section>
+        <hr>
+
+        <section style="text-align: left;">
+            <h1>Генераторы</h1>
+            <ul>
+                <li>Цвета</li>
+                <ul>
+                    <li>Color Mixers</li>
+                    <li>Color Tester</li>
+                    <li>Color Pallete</li>
+                </ul>
+
+                <li>Фавиконы</li>
+                <ol>
+                    <li>Favicon.cc</li>
+                    <ul>
+                        <li>Скачать</li>
+                        <li>Демо</li>
+                    </ul>
+                    <li>WebLab Favicon</li>
+                </ol>
+
+                <li>Фоны</li>
+                <ul>
+                    <li>BigMaker</li>
+                    <li>StripeGenerator</li>
+                </ul>
+
+                <li>Изображения</li>
+                <ol>
+                    <li>Buttonator</li>
+                    <li>AjaxLoad</li>
+                </ol>
+            </ul>
+        </section>
+        <hr>
+
+        <section style="text-align: left;">
+            <h1> Стихотворение</h1>
+            <p>Мериады маленьких дел<br>
+                Пьют по капле гаснущий день,<br>
+                А <em>дела большие</em> сушит жажда.<br>
+                Оставляя всё на "потом",<br>
+                Прозревая задним числом,<br>
+                Только день <strong>не повторится</strong> дважды.
+            </p>
+            <p>И.Тальков</p>
+        </section>
+        <hr>
+
+        <section>
+            <h1 style="color:brown">Заголовок первого уровня</h1>
+            <h2>Заголовок второго уровня</h2>
+            <h3 style="color:#c28b53">Заголовок третьего уровня</h3>
+            <p>Пример ссылки <a href="https://www.google.com/" target="_blank" style="color:green">ведущей на другую страницу</a> </p>
+        </section>
+        <hr>
+
+        <section style="text-align: left;">
+            <p> Неделя: <input type="week" name="week"></p>
+            <p> Дата и время: <input type="datetime-local" name="date"></p>
+            <p> Месяц: <input type="month" name="month"></p>
+            <p> Время: <input type="time" name="time"></p>
+            <button>Отправить</button>
+        </section>
+        <hr>
+
+        <section >
+            <h1>Форма заявки на работу в зоопарке</h1>
+            <p><em>Пожалуйста, заполните форму. Обязательные поля помечены <span style="color:red;">*</span></em></p>
+            <form style="text-align: left;">
+                <fieldset>
+                    <legend> Контактная информация</legend>
+                    <label for="name">Имя<span style="color:red;">*</span></label>
+                    <input type="text" id="name" /><br>
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone"><br>
+                    <label for="email">Email<span style="color:red;">*</span></label>
+                    <input type="email" id="email">
+                </fieldset>
+
+                <fieldset>
+                    <legend> Персональная информация</legend>
+                    <label for="age">Возраст<span style="color:red;">*</span></label>
+                    <input type="text" id="age" /><br>
+
+                    <label for="sex">Пол</label>
+                    <input type="text" id="sex" list="list"><br>
+                        <datalist id="list">
+                            <option value="Женщина">
+                            <option value="Мужчина">
+                        </datalist>
+
+                    <label for="message">Перечислите личные качества</label>
+                    <textarea id="message" rows="5" cols="30" name="text"></textarea>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Выберите ваших любимых животных</legend>
+                    <label>
+                        <input type="checkbox" value="option1">
+                        Зебра
+                    </label>
+                    <label>
+                        <input type="checkbox" value="option2">
+                        Кошак
+                    </label>
+                    <label>
+                        <input type="checkbox" value="option3">
+                        Анаконда
+                    </label>
+                    <label>
+                        <input type="checkbox" value="option4">
+                        Человек
+                    </label><br>
+                    <label>
+                        <input type="checkbox" value="option5">
+                        Слон
+                    </label>
+                    <label>
+                        <input type="checkbox" value="option6">
+                        Антилопа
+                    </label>
+                    <label>
+                        <input type="checkbox" value="option7">
+                        Голубь
+                    </label>
+                    <label>
+                        <input type="checkbox" value="option8">
+                        Краб
+                    </label>
+                </fieldset>
+
+                <button>Отправить информацию</button>
+
+            </form>
+
+
+        </section>
+    </main>
+
+    <footer>
+
+    </footer>
+
+</body>
+</html>
