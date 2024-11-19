@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block main_menu %}
+    {{ super() }}
+    {% include 'quiz_menu.html' %}
+{% endblock %}
+
+
+{% block content2 %}
+<form method="POST">
+    <div class="questions quiz_form">
+        <fieldset>
+            <legend>Изменить Вопрос</legend>
+            <textarea id="question"  name="question" rows="5" cols="33" maxlength="250"> {{question.question}}</textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>Изменить правильный ответ</legend>
+            <textarea id="answer"  name="answer" maxlength="100"> {{question.answer}}</textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Изменить неправильный ответ 1</legend>
+            <textarea id="wrong1"  name="wrong1" maxlength="100"> {{question.wrong1}}</textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Изменить неправильный ответ 2</legend>
+            <textarea  id="wrong2"  name="wrong2" maxlength="100"> {{question.wrong2}}</textarea>>
+        </fieldset>
+        <fieldset>
+            <legend>Изменить неправильный ответ 3</legend>
+            <textarea id="wrong3"  name="wrong3" maxlength="100"> {{question.wrong3}}</textarea>>
+        </fieldset>
+
+
+        <div>
+            <button class="button" type="submit" name="action" value="cancel">Отмена</button>
+            <button class="button" type="submit" name="action" value="save">Ок</button>
+            <button class="button" type="submit" name="action" value="delete">Удалить Вопрос</button>
+        </div>
+
+
+
+    </div>
+
+
+</form>
+
+
+{% endblock %}

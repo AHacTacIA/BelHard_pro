@@ -94,7 +94,9 @@
 {% endblock %}
 
 {% block content2_head %}
-    <h2>Вопросы  <a class="button" href="#modal2">+</a></h2>
+<!--    <h2>Вопросы  <a class="button" href="#modal2">+</a></h2>-->
+        <h2>Вопросы <a class="button" href="/question_add/">+</a></h2>
+
 {% endblock %}
 
 
@@ -111,7 +113,7 @@
         <div class="quiz-col">Ответ 3</div>
     </div>
     {% for q in questions %}
-    <a href="#">
+    <a href="/question_edit/{{q.id}}">
         <div class="question-row">
             <div class="quiz-col">{{ loop.index}}</div>
             <div class="quiz-col">{{ q.question }}</div>

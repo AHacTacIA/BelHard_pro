@@ -142,7 +142,7 @@ def quiz_edit(id: int):
             q_id.append(q.id)
         questions = Question.query.filter(Question.id.not_in(q_id)).all()
 
-        return render_template('quiz_edit.html', quiz=quiz, html_config=html_config, questions=questions, is_add=False)
+        return render_template('quiz_edit.html', quiz=quiz, html_config=html_config, questions=questions)
 
     action = request.form['action']
     if action == 'cancel':
@@ -165,6 +165,46 @@ def quiz_edit(id: int):
             question = Question.query.get(q)
             print(question)
             quiz.question.append(question)
+        db.session.commit()
+        return redirect(url_for('view_quiz_edit'))
+
+
+@app.route('/question_add/', methods=['GET', 'POST'])
+def question_add():
+    if request.method == 'POST':
+        action = request.form['action']
+        if action == 'cancel':
+            return redirect(url_for('view_quiz_edit'))
+        elif action == 'save':
+            question = Question(request.form.get('question'), request.form.get('answer'), request.form.get('wrong1'),
+                                request.form.get('wrong2'), request.form.get('wrong3'))
+            db.session.add(question)
+            db.session.commit()
+            return redirect(url_for('view_quiz_edit'))
+    return render_template('question_add.html', html_config=html_config)
+
+
+@app.route('/question_edit/<int:id>', methods=['GET', 'POST'])
+def question_edit(id: int):
+    question = Question.query.get(id)
+    if request.method == 'GET':
+        return render_template('question_edit.html', html_config=html_config, question=question)
+
+    action = request.form['action']
+    if action == 'cancel':
+        return redirect(url_for('view_quiz_edit'))
+    elif action == 'delete':
+        db.session.delete(question)
+        db.session.commit()
+        return redirect(url_for('view_quiz_edit'))
+    elif action == 'save':
+
+        question.question = request.form.get('question')
+        question.answer = request.form.get('answer')
+        question.wrong1 = request.form.get('wrong1')
+        question.wrong2 = request.form.get('wrong2')
+        question.wrong3 = request.form.get('wrong3')
+
         db.session.commit()
         return redirect(url_for('view_quiz_edit'))
 

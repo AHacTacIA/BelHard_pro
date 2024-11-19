@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block main_menu %}
+    {{ super() }}
+    {% include 'quiz_menu.html' %}
+{% endblock %}
+
+
+{% block content2 %}
+<form method="POST">
+    <div class="questions quiz_form">
+        <fieldset>
+            <legend>Вопрос</legend>
+            <textarea id="question"  name="question" rows="5" cols="33" maxlength="250"> </textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>Правильный ответ</legend>
+            <textarea id="answer"  name="answer" maxlength="100"> </textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Неправильный ответ 1</legend>
+            <textarea id="wrong1"  name="wrong1" maxlength="100"> </textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Неправильный ответ 2</legend>
+            <textarea  id="wrong2"  name="wrong2" maxlength="100"> </textarea>>
+        </fieldset>
+        <fieldset>
+            <legend>Неправильный ответ 3</legend>
+            <textarea id="wrong3"  name="wrong3" maxlength="100"> </textarea>>
+        </fieldset>
+
+
+        <div>
+            <button class="button" type="submit" name="action" value="cancel">Отмена</button>
+            <button class="button" type="submit" name="action" value="save">Добавить Вопрос</button>
+        </div>
+
+
+
+    </div>
+
+
+</form>
+
+
+{% endblock %}
