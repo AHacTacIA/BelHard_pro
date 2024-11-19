@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block main_menu %}
+    {{ super() }}
+    {% include 'quiz_menu.html' %}
+{% endblock %}
+
+
+{% block content1 %}
+<form method="POST">
+    <div class="quizes quiz_form">
+        <fieldset>
+            <legend>Измените название</legend>
+            <label for="name">Название</label>
+            <input type="text"id="name"  name="name" value="{{quiz.name}}">
+        </fieldset>
+        <fieldset>
+            <legend>Включённые вопросы</legend>
+            <p>Отметьте вопрос, чтобы исключить его из КВИЗА</p>
+
+            <div class="question-row question-hrow">
+                <div class="quiz-col">№</div>
+                <div class="quiz-col">Вопрос</div>
+                <div class="quiz-col">Правильный ответ</div>
+                <div class="quiz-col">Ответ 1</div>
+                <div class="quiz-col">Ответ 2</div>
+                <div class="quiz-col">Ответ 3</div>
+            </div>
+            {% for q in quiz.question %}
+            <a href="#">
+                <div class="question-row">
+                    <div class="quiz-col"><input type="checkbox" name="exclude_q" value="{{q.id}}">{{ loop.index }}</div>
+                    <div class="quiz-col">{{ q.question }}</div>
+                    <div class="quiz-col">{{ q.answer }}</div>
+                    <div class="quiz-col">{{ q.wrong1 }}</div>
+                    <div class="quiz-col">{{ q.wrong2 }}</div>
+                    <div class="quiz-col">{{ q.wrong3 }}</div>
+                </div>
+            </a>
+            {%endfor%}
+        </fieldset>
+        <fieldset>
+            <legend>Остальные вопросы</legend>
+            <p>Отметьте вопрос, чтобы добавить его в КВИЗ</p>
+            <div class="question-row question-hrow">
+                <div class="quiz-col">№</div>
+                <div class="quiz-col">Вопрос</div>
+                <div class="quiz-col">Правильный ответ</div>
+                <div class="quiz-col">Ответ 1</div>
+                <div class="quiz-col">Ответ 2</div>
+                <div class="quiz-col">Ответ 3</div>
+            </div>
+            {% for q in questions %}
+            <a href="#">
+                <div class="question-row">
+                    <div class="quiz-col"><input type="checkbox" name="include_q" value="{{q.id}}">{{ loop.index }}</div>
+                    <div class="quiz-col">{{ q.question }}</div>
+                    <div class="quiz-col">{{ q.answer }}</div>
+                    <div class="quiz-col">{{ q.wrong1 }}</div>
+                    <div class="quiz-col">{{ q.wrong2 }}</div>
+                    <div class="quiz-col">{{ q.wrong3 }}</div>
+                </div>
+            </a>
+            {%endfor%}
+        </fieldset>
+
+        <div>
+            <button class="button" type="submit" name="action" value="cancel">Отмена</button>
+            <button class="button" type="submit" name="action" value="save">Ок</button>
+            <button class="button" type="submit" name="action" value="delete">Удалить Квиз</button>
+        </div>
+
+
+
+    </div>
+
+
+</form>
+
+
+{% endblock %}
