@@ -4,7 +4,7 @@ from sqlalchemy import select, String, ForeignKey, Table, Column, Integer
 from schema import UserAdd, QuizAdd, QuestionAdd
 
 # engine = create_async_engine("sqlite+aiosqlite:///db//fastapi.db")
-engine = create_async_engine("postgresql+asyncpg://postgres:120613@localhost:5432/fast_quiz")
+engine = create_async_engine("postgresql+asyncpg://postgres:120613@localhost:5432/api_quiz")
 new_session = async_sessionmaker(engine, expire_on_commit=False)
 
 
@@ -24,8 +24,7 @@ class UserOrm(Model):
     name: Mapped[str] = mapped_column(String(30))
     age: Mapped[int]
     phone: Mapped[str | None]
-    quizes: Mapped[list["QuizOrm"]] = relationship("QuizOrm", back_populates="user",
-                                                   cascade="all, delete, delete-orphan")
+    quizes: Mapped[list["QuizOrm"]] = relationship("QuizOrm", back_populates="user", cascade="all, delete, delete-orphan")
 
 
 class QuizOrm(Model):
@@ -34,8 +33,7 @@ class QuizOrm(Model):
     name: Mapped[str] = mapped_column(String(100))
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     user: Mapped["UserOrm"] = relationship("UserOrm", back_populates="quizes")
-    question: Mapped[list["QuestionOrm"]] = relationship("QuestionOrm", secondary=quiz_question,
-                                                         back_populates="quizes")
+    question: Mapped[list["QuestionOrm"]] = relationship("QuestionOrm", secondary=quiz_question,back_populates="quizes")
 
 
 class QuestionOrm(Model):
@@ -117,10 +115,11 @@ async def add_test_data():
         quizes[3].question.append(questions[0])
         quizes[3].question.append(questions[1])
         quizes[3].question.append(questions[3])
-        session.add_all(users)
-        session.add_all(quizes)
-        session.add_all(questions)
+        # session.add_all(users)
 
+        # session.add_all(quizes)
+        session.add_all(questions)
+        await session.commit()
 
 class UserRepository:
 
