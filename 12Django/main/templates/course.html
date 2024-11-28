@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Курсы {% endblock %}
+
+
+
+{% block content1_head %}
+    <h2>Курс 1</h2>
+{% endblock %}
+
+{% block content1 %}
+<div class="st-info">
+    <div class="info">
+        <p> Курс: {{ course }}</p>
+        <p> Начало курса: {{ course.start_date }}</p>
+        <p> Окончание курса: {{ course.end_date }}</p>
+        <p> Студенты:
+            {% for s in course.students_courses.all %}
+                {{s}}{% if not forloop.last %}, {% endif %}
+            {% endfor %} 
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block content2_head %}
+    <h2>Заголовок 2</h2>
+{% endblock %}
+
+{% block content2 %}
+    <h1>hellllooo 2</h1>
+{% endblock %}
