@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+
+{% block content1_head %}
+    <h1>Последние рецепты</h1>
+{% endblock %}
+
+{% block content1 %}
+    <ul>
+        {% for recipe in recipes %}
+            <li>
+                <a href="{% url 'recipe' recipe.pk%}">{{ recipe.title }}</a>
+                <!-- Можно добавить краткое описание или картинку -->
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

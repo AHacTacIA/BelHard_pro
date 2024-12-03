@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content1_head %}
+    <h2>{{ recipe.title }}</h2>
+{% endblock %}
+
+{% block content1 %}
+    <p><b>Автор:</b> {{ recipe.author }}</p>
+
+    <p><b>Время приготовления:</b> {{ recipe.cook_time }} мин.</p>
+    <p><b>Порций:</b> {{ recipe.servings }}</p>
+    <h3>Ингредиенты:</h3>
+    <ul>
+        {% for ingredient in recipe.ingredients_recipe.all %}
+            <li>{{ ingredient.ingredient.name }} {{ ingredient.quantity }} {{ ingredient.unit }} </li>
+        {% endfor %}
+    </ul>
+    <h3>Инструкция:</h3>
+    <p>{{ recipe.instruction|linebreaksbr }}</p>
+{% endblock %}
+
+
+{% block content2_head %}
+    <h2>Отзывы</h2>
+{% endblock %}
+
+{% block content2 %}
+    {% if recipe.reviews.all %}
+        <ul>
+            {% for review in recipe.reviews.all %}
+                <li>
+                    <b>{{ review.user }}:</b> {{ review.rating }}/10 - {{ review.comment|linebreaksbr }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Пока нет отзывов.</p>
+    {% endif %}
+{% endblock %}
