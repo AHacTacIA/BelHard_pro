@@ -18,13 +18,13 @@
                 {% if request.user.is_authenticated  %}
                     <!-- будет показываться только если пользователь залогинился -->
 <!--                    <li class="menu-rt menu-user">{{ user.username }}</li>-->
-                    <li class="menu-rt"><a href="/my_recipies/">Мои рецепты</a></li>
+                    <li class="menu-rt"><a href="{% url 'my_recipes'%}">Мои рецепты</a></li>
                     <li class="menu-rt"><a href="/logout/">Выход</a></li>
                 {% else %}
                     <li class="menu-rt"><a href="/login/">Логин</a></li>
                     <li class="menu-rt"><a href="/reg/">Регистрация</a></li>
                 {% endif %}
-                <li><a href="">Главная</a></li>
+                <li><a href="{% url 'index' %}">Главная</a></li>
                 <li><a href="/admin/">Админка</a></li>
                 {% endblock %}
             </ul>

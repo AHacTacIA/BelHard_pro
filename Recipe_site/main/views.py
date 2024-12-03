@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
 
@@ -22,4 +23,9 @@ def recipe(request, id):
     #     print(ingredient.unit)
     #     print(ingredient.quantity)
     return render(request, 'recipe.html', context={'recipe': recipe})
-# Create your views here.
+
+
+@login_required
+def my_recipes(request):
+    recipes = request.user.recipes.all()  #Получение всех рецептов текущего пользователя
+    return render(request, 'my_recipes.html', {'recipes': recipes})

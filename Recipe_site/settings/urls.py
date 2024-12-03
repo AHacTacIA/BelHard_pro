@@ -25,4 +25,5 @@ urlpatterns = [
                   path('', views.index, name='index'),
                   # path('recipe/<int:id>/', views.recipe, name='recipe'),
                   path('recipe/<int:id>/', views.RecipeView.as_view(), name='recipe'),
+                  path('my_recipes/', views.my_recipes, name='my_recipes'),
               ] + debug_toolbar_urls()

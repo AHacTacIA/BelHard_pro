@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content1_head %}
+    <h2>Мои рецепты</h2>
+{% endblock %}
+
+{% block content1 %}
+    {% if recipes %}
+        <ul>
+            {% for recipe in recipes %}
+                <li>
+                    <a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a>
+                    <!-- Можно добавить краткое описание или картинку -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас пока нет рецептов.</p>
+    {% endif %}
+{% endblock %}
